@@ -41,6 +41,18 @@ namespace NucleiInstaller
             }
         }
 
+        // .NET 3.5 doesn't have Stream.CopyTo so here we are :D
+        static void CopyTo(Stream input, Stream output)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            int bytesRead;
+
+            while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                output.Write(buffer, 0, bytesRead);
+            }
+        }
+
         static void RunInstaller(string currentPath, int archiveLength)
         {
             string tempExtract = Path.GetTempFileName();
@@ -48,7 +60,7 @@ namespace NucleiInstaller
             {
                 using (var writeStream = new FileStream(tempExtract, FileMode.OpenOrCreate, FileAccess.Write)) {
                     stream.Seek(stream.Length - archiveLength - 4, SeekOrigin.Current);
-                    stream.CopyTo(writeStream);
+                    CopyTo(stream, writeStream);
                     stream.Close();
                 }
             }
