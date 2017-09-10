@@ -1,0 +1,3 @@
+# Nuclei Installer for Windows
+
+**THIS IS NOT PRODUCTION READY, IT ISN'T EVEN TEST READY**
